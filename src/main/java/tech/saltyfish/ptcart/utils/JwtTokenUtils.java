@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 
 import java.security.Key;
 import java.util.Date;
@@ -37,7 +38,12 @@ public class JwtTokenUtils {
 
     // 从token中获取用户名
     public static String getUsername(String token) {
-        return getTokenBody(token).getSubject();
+        try {
+            return getTokenBody(token).getSubject();
+        } catch (SignatureException e) {
+            return null;
+        }
+
     }
 
     // 是否已过期
