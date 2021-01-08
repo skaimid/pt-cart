@@ -17,13 +17,13 @@ public class Link {
 
     private String url;
 
-    @JsonIgnore
-    @ManyToOne
-    private Channel ownedChannel;
 
-    public Link(String url, Channel ownedChannel) {
+    @ManyToOne
+    private ChannelEntity ownedChannelEntity;
+
+    public Link(String url, ChannelEntity ownedChannelEntity) {
         this.url = url;
-        this.ownedChannel = ownedChannel;
+        this.ownedChannelEntity = ownedChannelEntity;
     }
 
     public Link(String url) {
@@ -49,14 +49,14 @@ public class Link {
         this.url = url;
     }
 
-
-    public Channel getOwnedChannel() {
-        return ownedChannel;
+    @JsonIgnore
+    public ChannelEntity getOwnedChannel() {
+        return ownedChannelEntity;
     }
 
 
-    public void setOwnedChannel(Channel ownedChannel) {
-        this.ownedChannel = ownedChannel;
+    public void setOwnedChannel(ChannelEntity ownedChannelEntity) {
+        this.ownedChannelEntity = ownedChannelEntity;
     }
 
     @Override
@@ -66,12 +66,12 @@ public class Link {
         Link link = (Link) o;
         return linkId.equals(link.linkId) &&
                 url.equals(link.url) &&
-                ownedChannel.equals(link.ownedChannel);
+                ownedChannelEntity.equals(link.ownedChannelEntity);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(linkId, url, ownedChannel);
+        return Objects.hash(linkId, url, ownedChannelEntity);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class Link {
         return "Link{" +
                 "linkId=" + linkId +
                 ", url='" + url + '\'' +
-                ", ownedChannel=" + ownedChannel +
+                ", ownedChannel=" + ownedChannelEntity +
                 '}';
     }
 }

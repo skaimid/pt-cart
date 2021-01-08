@@ -1,7 +1,7 @@
 package tech.saltyfish.ptcart.controller;
 
 import org.springframework.web.bind.annotation.*;
-import tech.saltyfish.ptcart.model.entity.Channel;
+import tech.saltyfish.ptcart.model.entity.ChannelEntity;
 import tech.saltyfish.ptcart.model.entity.Link;
 import tech.saltyfish.ptcart.service.ChannelRepository;
 import tech.saltyfish.ptcart.service.LinkRepository;
@@ -35,11 +35,11 @@ public class LinkController {
 //    }
 
     @PostMapping("/links")
-    List<Channel> addLink(Principal principal, @RequestBody Map<String, String> newLink) {
+    List<ChannelEntity> addLink(Principal principal, @RequestBody Map<String, String> newLink) {
         String username = principal.getName();
         Link link = new Link();
         link.setUrl(newLink.get("link"));
-        Optional<Channel> oc = channelRepository.findByOwnedUser_Username(username)
+        Optional<ChannelEntity> oc = channelRepository.findByOwnedUser_Username(username)
                 .stream()
                 .filter(channel -> channel.getChannelId() == Long.parseLong(newLink.get("channelId")))
                 .findFirst();

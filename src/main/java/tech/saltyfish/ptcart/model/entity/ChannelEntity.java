@@ -9,7 +9,7 @@ import java.util.Objects;
 
 
 @Entity
-public class Channel {
+public class ChannelEntity {
     private @Id
     @GeneratedValue
     Long channelId;
@@ -21,17 +21,17 @@ public class Channel {
     private User ownedUser;
 
 
-    @OneToMany(mappedBy = "ownedChannel", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "ownedChannelEntity", cascade = CascadeType.REMOVE)
     private List<Link> linkSet;
 
-    public Channel() {
+    public ChannelEntity() {
     }
 
-    public Channel(String channelName) {
+    public ChannelEntity(String channelName) {
         this.channelName = channelName;
     }
 
-    public Channel(String channelName, User ownedUser) {
+    public ChannelEntity(String channelName, User ownedUser) {
         this.channelName = channelName;
         this.ownedUser = ownedUser;
     }
@@ -74,11 +74,11 @@ public class Channel {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Channel)) return false;
-        Channel channel = (Channel) o;
-        return channelId.equals(channel.channelId) &&
-                channelName.equals(channel.channelName) &&
-                ownedUser.equals(channel.ownedUser);
+        if (!(o instanceof ChannelEntity)) return false;
+        ChannelEntity channelEntity = (ChannelEntity) o;
+        return channelId.equals(channelEntity.channelId) &&
+                channelName.equals(channelEntity.channelName) &&
+                ownedUser.equals(channelEntity.ownedUser);
     }
 
     @Override

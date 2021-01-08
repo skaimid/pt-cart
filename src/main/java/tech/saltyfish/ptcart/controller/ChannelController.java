@@ -1,7 +1,7 @@
 package tech.saltyfish.ptcart.controller;
 
 import org.springframework.web.bind.annotation.*;
-import tech.saltyfish.ptcart.model.entity.Channel;
+import tech.saltyfish.ptcart.model.entity.ChannelEntity;
 import tech.saltyfish.ptcart.service.ChannelRepository;
 import tech.saltyfish.ptcart.service.UserRepository;
 
@@ -21,13 +21,13 @@ public class ChannelController {
     }
 
     @GetMapping("/channels")
-    List<Channel> getChannelByUsername(Principal principal) {
+    List<ChannelEntity> getChannelByUsername(Principal principal) {
         String username = principal.getName();
         return channelRepository.findByOwnedUser_Username(username);
     }
 
     @DeleteMapping("/channels/{cid}")
-    List<Channel> deleteChannelById(Principal principal, @PathVariable long cid) {
+    List<ChannelEntity> deleteChannelById(Principal principal, @PathVariable long cid) {
         String username = principal.getName();
         if (channelRepository.findByOwnedUser_Username(username).stream().anyMatch(channel -> channel.getChannelId() == cid)) {
             channelRepository.deleteById(cid);
@@ -39,10 +39,10 @@ public class ChannelController {
     }
 
     @PostMapping("/channels")
-    List<Channel> addChannel(Principal principal, @RequestBody Channel channel) {
-        channel.setOwnedUser(userRepository.findByUsername(principal.getName()));
-        channel.setLinkSet(new LinkedList<>());
-        channelRepository.save(channel);
+    List<ChannelEntity> addChannel(Principal principal, @RequestBody ChannelEntity channelEntity) {
+        channelEntity.setOwnedUser(userRepository.findByUsername(principal.getName()));
+        channelEntity.setLinkSet(new LinkedList<>());
+        channelRepository.save(channelEntity);
         return channelRepository.findByOwnedUser_Username(principal.getName());
     }
 

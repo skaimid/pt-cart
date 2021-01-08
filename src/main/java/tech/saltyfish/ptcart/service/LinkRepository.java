@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface LinkRepository extends JpaRepository<Link, Long> {
 
-    List<Link> findByOwnedChannel_ChannelId(Long ownedChannelId);
+    List<Link> findByOwnedChannelEntity_ChannelId(Long ownedChannelId);
 
-    List<Link> findByOwnedChannel_ChannelName(String ownedChannelName);
+    List<Link> findByOwnedChannelEntity_ChannelName(String ownedChannelName);
 }

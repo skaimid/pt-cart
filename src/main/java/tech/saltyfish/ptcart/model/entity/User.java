@@ -24,7 +24,7 @@ public class User {
 
 
     @OneToMany(mappedBy = "ownedUser")
-    private List<Channel> channelSet;
+    private List<ChannelEntity> channelEntitySet;
 
     public User() {
     }
@@ -58,12 +58,12 @@ public class User {
     }
 
     @JsonIgnore
-    public List<Channel> getChannelSet() {
-        return channelSet;
+    public List<ChannelEntity> getChannelSet() {
+        return channelEntitySet;
     }
 
-    public void setChannelSet(List<Channel> channelSet) {
-        this.channelSet = channelSet;
+    public void setChannelSet(List<ChannelEntity> channelEntitySet) {
+        this.channelEntitySet = channelEntitySet;
     }
 
     @JsonIgnore
@@ -100,12 +100,12 @@ public class User {
         return username.equals(user.username) &&
                 password.equals(user.password) &&
                 Objects.equals(role, user.role) &&
-                Objects.equals(channelSet, user.channelSet);
+                Objects.equals(channelEntitySet, user.channelEntitySet);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, password, role, channelSet);
+        return Objects.hash(username, password, role, channelEntitySet);
     }
 
     @Override
@@ -115,7 +115,7 @@ public class User {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
-                ", channelSet=" + channelSet +
+                ", channelSet=" + channelEntitySet +
                 '}';
     }
 }
