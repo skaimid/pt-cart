@@ -38,6 +38,13 @@ public class AuthController {
         return save.toString();
     }
 
+    @PostMapping("/updatePassword")
+    public User updatePassword(@RequestBody Map<String, String> newPassword, Principal principal) {
+        User user = userRepository.findByUsername(principal.getName());
+        user.setPassword(bCryptPasswordEncoder.encode(newPassword.get("password")));
+        return userRepository.save(user);
+    }
+
     @GetMapping("/validate")
     public User validateToken(Principal principal) {
         String name = principal.getName();

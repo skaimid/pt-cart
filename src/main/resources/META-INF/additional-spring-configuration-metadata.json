@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "allow.cors",
+      "type": "java.lang.String",
+      "description": "Description for allow.cors."
+    }
+  ]
+}
