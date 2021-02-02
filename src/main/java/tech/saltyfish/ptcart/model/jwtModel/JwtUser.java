@@ -26,7 +26,7 @@ public class JwtUser implements UserDetails {
         authorities = Collections.singleton(new SimpleGrantedAuthority(user.getRole()));
     }
 
-    // 获取权限信息，目前博主只会拿来存角色。。
+    // 获取权限信息
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;

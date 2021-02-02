@@ -1,12 +1,9 @@
 package tech.saltyfish.ptcart.controller;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import tech.saltyfish.ptcart.model.entity.User;
-import tech.saltyfish.ptcart.service.UserRepository;
-import tech.saltyfish.ptcart.utils.RssTokenUtils;
+import tech.saltyfish.ptcart.service.AuthService;
 
-import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,71 +12,40 @@ import java.util.Map;
 @RequestMapping("/auth")
 public class AuthController {
 
-    // 为了减少篇幅就不写service接口了
 
-    private final UserRepository userRepository;
+    private final AuthService authService;
 
-
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    public AuthController(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.userRepository = userRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    public AuthController(AuthService authServiceImpl) {
+        this.authService = authServiceImpl;
     }
+
 
     @PostMapping("/register")
     public String registerUser(@RequestBody Map<String, String> registerUser) {
-        User user = new User();
-        user.setUsername(registerUser.get("username"));
-        // 记得注册的时候把密码加密一下
-        user.setPassword(bCryptPasswordEncoder.encode(registerUser.get("password")));
-        user.setRole("ROLE_USER");
-        User save = userRepository.save(user);
-        return save.toString();
+        return authService.registerUser(registerUser.get("username"), registerUser.get("password"), "ROLE_USER");
     }
 
     @PostMapping("/updatePassword")
     public User updatePassword(@RequestBody Map<String, String> newPassword, Principal principal) {
-        User user = userRepository.findByUsername(principal.getName());
-        user.setPassword(bCryptPasswordEncoder.encode(newPassword.get("password")));
-        return userRepository.save(user);
+        return authService.updatePassword(principal.getName(), newPassword.get("password"));
     }
 
     @GetMapping("/validate")
     public User validateToken(Principal principal) {
-        String name = principal.getName();
-        return userRepository.findByUsername(name);
+        return authService.validateToken(principal.getName());
     }
 
     @GetMapping("/token")
     public Map<String, String> getToken(Principal principal) {
         HashMap<String, String> rs = new HashMap<>();
-        User user = userRepository.findByUsername(principal.getName());
-        if (user.getToken() == null || user.getToken().length() != 32) {
-            try {
-                user.setToken(RssTokenUtils.generateRssToken(user.getUsername(), user.getPassword()));
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            }
-            userRepository.save(user);
-        }
-        rs.put("token", user.getToken());
+        rs.put("token", authService.getToken(principal.getName()));
         return rs;
     }
 
     @GetMapping("/updateToken")
     public Map<String, String> updateToken(Principal principal) {
         HashMap<String, String> rs = new HashMap<>();
-        User user = userRepository.findByUsername(principal.getName());
-
-        try {
-            user.setToken(RssTokenUtils.generateRssToken(user.getUsername(), user.getPassword()));
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        userRepository.save(user);
-
-        rs.put("token", user.getToken());
+        rs.put("token", authService.generateToken(principal.getName()));
         return rs;
     }
 }
