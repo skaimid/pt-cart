@@ -23,7 +23,7 @@ public class AuthServiceImpl implements AuthService {
     public String registerUser(String username, String password, String role) {
         User user = new User();
         user.setUsername(username);
-        // 记得注册的时候把密码加密一下
+        // 注册的时候把密码加密一下
         user.setPassword(bCryptPasswordEncoder.encode(password));
         user.setRole(role);
         User save = userRepository.save(user);
