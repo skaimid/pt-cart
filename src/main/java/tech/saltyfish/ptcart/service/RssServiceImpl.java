@@ -34,14 +34,18 @@ public class RssServiceImpl implements RssService {
         if (username.isPresent() && token.isPresent() && channelId.isPresent()) {
             if (!username.get().equals("")) {
                 ChannelEntity entity = channelEntityRepository.findByChannelIdAndOwnedUser_Username(channelId.get(), username.get());
-                entity.getLinkSet().forEach(link -> {
-                    Item item = new Item();
-                    Enclosure enclosure = new Enclosure();
-                    enclosure.setUrl(link.getUrl());
-                    enclosure.setType("application/x-bittorrent");
-                    item.setEnclosures(Collections.singletonList(enclosure));
-                    itemLinkedList.add(item);
-                });
+
+
+                if (entity != null) { // avoid NPE
+                    entity.getLinkSet().forEach(link -> {
+                        Item item = new Item();
+                        Enclosure enclosure = new Enclosure();
+                        enclosure.setUrl(link.getUrl());
+                        enclosure.setType("application/x-bittorrent");
+                        item.setEnclosures(Collections.singletonList(enclosure));
+                        itemLinkedList.add(item);
+                    });
+                }
                 channel.setItems(itemLinkedList);
                 return channel;
             }

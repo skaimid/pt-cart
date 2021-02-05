@@ -29,6 +29,11 @@ dependencies {
     // https://mvnrepository.com/artifact/com.rometools/rome
     compile group: 'com.rometools', name: 'rome', version: '1.15.0'
 
+    // for api doc
+    compile 'org.springdoc:springdoc-openapi-ui:1.5.3'
+    compile 'org.springdoc:springdoc-openapi-security:1.5.3'
+    compile 'org.springdoc:springdoc-openapi-webmvc-core:1.5.3'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
 

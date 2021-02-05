@@ -21,13 +21,17 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String registerUser(String username, String password, String role) {
-        User user = new User();
-        user.setUsername(username);
-        // 注册的时候把密码加密一下
-        user.setPassword(bCryptPasswordEncoder.encode(password));
-        user.setRole(role);
-        User save = userRepository.save(user);
-        return save.toString();
+        if (userRepository.findByUsername(username) == null) {
+            User user = new User();
+            user.setUsername(username);
+            // 注册的时候把密码加密一下
+            user.setPassword(bCryptPasswordEncoder.encode(password));
+            user.setRole(role);
+            User save = userRepository.save(user);
+            return save.toString();
+        } else {
+            return null;
+        }
     }
 
     @Override

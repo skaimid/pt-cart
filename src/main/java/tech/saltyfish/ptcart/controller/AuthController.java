@@ -22,7 +22,11 @@ public class AuthController {
 
     @PostMapping("/register")
     public String registerUser(@RequestBody Map<String, String> registerUser) {
-        return authService.registerUser(registerUser.get("username"), registerUser.get("password"), "ROLE_USER");
+        if (authService.registerUser(registerUser.get("username"), registerUser.get("password"), "ROLE_USER") != null) {
+            return Boolean.toString(true);
+        } else {
+            return Boolean.toString(false);
+        }
     }
 
     @PostMapping("/updatePassword")
